@@ -185,10 +185,19 @@ class EventsController extends BaseController
 
         $data = Event::with([
             'workshops' => function($q) {
-                $q
-                ->select('workshops.*')->where('workshops.start', '>=', Carbon::now());
+                $q->select('workshops.*')->where('workshops.start', '>=', Carbon::now());
             }
         ])->has('workshops')->get()->toArray();
-        return response()->json($data);
+        $result = $this->getDate($data);
+        return response()->json($result);
+    }
+    public function getDate($data) {
+        $result = [];
+        foreach ($data as $key => $value) {
+            if(count($value['workshops'])){
+                $result[] = $value;
+            }
+        }
+        return $result;
     }
 }

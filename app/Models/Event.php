@@ -14,7 +14,7 @@ class Event extends Model
 
     public function workshops()
     {
-        return $this->hasMany('App\Models\Workshop','event_id');
+        return $this->hasMany('App\Models\Workshop','event_id','id');
     }
     
 }
