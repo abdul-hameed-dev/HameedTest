@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class EventsController extends BaseController
 {
-    public function getEvents() {
+    public function getWarmupEvents() {
         $data = Event::get()->toArray();
         return response()->json($data);
     }
