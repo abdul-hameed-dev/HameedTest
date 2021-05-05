@@ -95,7 +95,16 @@ class MenuController extends BaseController
      */
 
     public function getMenuItems() {
-        $data = MenuItem::with(['children'])->has('children')->get()->toArray();
+
+        $data = MenuItem::with([
+            'children' => function ($child) {
+                return $child->with([
+                    'children' => function ($product) {
+                        return $product;
+                    }
+                ]);
+            }
+        ])->get()->first()->toArray();
         return response()->json($data);
     }
 }

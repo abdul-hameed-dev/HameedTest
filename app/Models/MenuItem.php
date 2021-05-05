@@ -14,6 +14,7 @@ class MenuItem extends Model
         'id','name','url','parent_id','created_at','updated_at'
     ];
 
+
     public function children()
     {
         return $this->hasMany('App\Models\MenuItem','parent_id');
