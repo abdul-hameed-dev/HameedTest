@@ -99,12 +99,16 @@ class MenuController extends BaseController
         $data = MenuItem::with([
             'children' => function ($child) {
                 return $child->with([
-                    'children' => function ($product) {
-                        return $product;
+                    'children' => function ($child1) {
+                        return $child1->with([
+                            'children' => function ($child2) {
+                                return $child2;
+                            }
+                        ]);
                     }
                 ]);
             }
         ])->get()->first()->toArray();
-        return response()->json($data);
+        return response()->json([$data]);
     }
 }
