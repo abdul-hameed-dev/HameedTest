@@ -8,9 +8,14 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Date;
+use Carbon\Carbon;
 
 class EventsController extends BaseController
 {
+    public function getEvents() {
+        $data = Event::get()->toArray();
+        return response()->json($data);
+    }
     /*
      Requirements:
     - maximum 2 sql queries
@@ -97,7 +102,8 @@ class EventsController extends BaseController
      */
 
     public function getEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 1');
+        $data = Event::with(['workshops'])->get()->toArray();
+        return response()->json($data);
     }
 
 
@@ -176,6 +182,13 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 2');
+
+        $data = Event::with([
+            'workshops' => function($q) {
+                $q
+                ->select('workshops.*')->where('workshops.start', '>=', Carbon::now());
+            }
+        ])->has('workshops')->get()->toArray();
+        return response()->json($data);
     }
 }
